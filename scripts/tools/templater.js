@@ -68,11 +68,15 @@ async function copyTemplate(params) {
 // Copies contents of placeholder.mod file to modsDir/modName/bundleDir/modName.mod
 async function createPlaceholderModFile(modName, bundleBase) {
 
+    console.log(modName);
     let bundleDir = await _setUpBundleDir(modName, bundleBase);
 
     let modFileExtenstion = config.get('modFileExtension');
     let placeholderModFilePath = path.join(`${__dirname}`, `/../../embedded/placeholder${modFileExtenstion}`);
     let modFilePath = path.combine(bundleDir, modName + modFileExtenstion);
+
+    console.log(placeholderBundle);
+    console.log(bundleFilePath);
 
     await pfs.copyFile(placeholderModFilePath, modFilePath);
 }

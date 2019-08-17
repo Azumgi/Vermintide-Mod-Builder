@@ -9,7 +9,8 @@
       "embedded/**/*"
     ],
     "targets": [
-      "node10-win-x64"
+      "node10-win-x64",
+      "node10-linux-x64"
     ]
   },
   "dependencies": {
@@ -19,6 +20,7 @@
     "glob-watcher": "^5.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.6.1",
+    "is-wsl": "^2.1.0",
     "merge-stream": "^1.0.1",
     "normalize-path": "^3.0.0",
     "opn": "^5.2.0",

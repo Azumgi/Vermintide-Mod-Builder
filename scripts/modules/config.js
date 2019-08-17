@@ -21,6 +21,7 @@ const path = require('../lib/path');
 const cl = require('./cl');
 
 const os = require('os');
+const isWsl = require('is-wsl');
 
 const defaultTempDir = '.temp';
 
@@ -115,10 +116,10 @@ let values = {
 
     // Paths to mod tools relative to the mod tools folder
     uploaderDir: 'ugc_uploader/',
-    uploaderExe: 'ugc_tool.exe',
+    uploaderExe: './ugc_tool.exe',
     uploaderGameConfig: 'steam_appid.txt',
     stingrayDir: 'bin/',
-    stingrayExe: 'stingray_win64_dev_x64.exe'
+    stingrayExe: './stingray_win64_dev_x64.exe'
 };
 
 // Returns key value, throws if it's undefined
@@ -200,11 +201,14 @@ async function parseData() {
     let { coreSrc, modSrc } = _getTemplateSrc(data.template_core_files, values.templateDir);
     values.coreSrc = coreSrc;
     values.modSrc = modSrc;
+    console.log(values.coreSrc);
+    console.log(values.modSrc);
+
 
     values.useNewFormat = _getGameSpecificKey('use_new_format');
     values.ignoreBuildErrors = data.ignore_build_errors;
 
-    let useFallback = cl.get('use-fallback');
+    let useFallback = isWsl || cl.get('use-fallback');
     values.useFallback = useFallback === undefined ? data.use_fallback : useFallback;
 
     let copySource = cl.get('source', 'copy-source-code');
@@ -292,8 +296,13 @@ async function _getConfigDir(filename, cwd, exeDir) {
         return homedir;
     }
     else {
-        // Otherwise use exe location as .vmbrc file location
-        return exeDir;
+        if (isWsl) {
+            // Return home directory as the default .vmbrc location for WSL users
+            return homedir;
+        } else {
+            // Otherwise use exe location as .vmbrc file location
+            return exeDir;
+        }
     }
 }
 
@@ -477,8 +486,13 @@ async function _getTemplateDir(templateDir) {
         return templateHomePath;
     }
     else {
-        // Use template from the folder with exe
-        return templateExePath;
+        // if (isWsl) {
+            // Use template from the user home directory
+            // return templateHomePath;
+        // } else {
+            // Use template from the folder with exe
+            return templateExePath;
+        // }
     }
 }
 

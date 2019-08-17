@@ -37,8 +37,9 @@ module.exports = async function taskCreate() {
 
         // Copy and customize template
         console.log(`Copying template from "${config.get('templateDir')}"`);
+        console.log(params);
         await templater.copyTemplate(params);
-
+        console.log("whatever");
         // Copy placeholder bundle or .mod file depending on format used
         if (config.get('useNewFormat')) {
             await templater.createPlaceholderModFile(modName, params.content);

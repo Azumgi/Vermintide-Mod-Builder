@@ -121,10 +121,14 @@ async function _getTempDir(modName, shouldRemove) {
 async function _runStingray(toolsDir, modDir, dataDir, buildDir, verbose) {
 
     let stingrayParams = [
-        `--compile-for win32`,
-        `--source-dir "${modDir}"`,
-        `--data-dir "${dataDir}"`,
-        `--bundle-dir "${buildDir}"`
+        '--compile-for',
+        'win32',
+        '--source-dir',
+        path.convert_to_win(modDir),
+        '--data-dir',
+        path.convert_to_win(dataDir),
+        '--bundle-dir',
+        path.convert_to_win(buildDir)
     ];
 
     // Spawn stingray.exe
